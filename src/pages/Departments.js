@@ -1,5 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Paper, Typography, Table, TableBody, TableCell, TableHead, TableRow, TablePagination, Box, TextField, MenuItem, Button, Skeleton } from '@mui/material';
+import {
+  Paper, Typography, Table, TableBody, TableCell, TableHead,
+  TableRow, TablePagination, Box, TextField, MenuItem, Button, Skeleton
+} from '@mui/material';
 import { toCSV, downloadCSV } from '../utils/csv';
 import api from '../api/api';
 
@@ -14,53 +17,51 @@ export default function Departments() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    let mounted = true;
     const fetchData = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
         const r1 = await api.get('/emissions/recent');
-        if (!mounted) return;
         setRecent(r1.data || []);
       } catch (err) {
-        console.error('fetch recent error', err);
+        console.error('Error fetching data', err);
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-    const id = setInterval(fetchData, 5000);
-    return () => { mounted = false; clearInterval(id); };
   }, []);
 
   const rows = useMemo(() => {
-    const base = recent.map((r) => ({
-      department: r.department,
-      scope: r.scope,
-      current: r.current,
-      voltage: r.voltage,
-      power: r.power,
-      energy: r.energy,
-      co2: r.co2_emissions,
-      timestamp: r.timestamp, // Keep original timestamp
-    }));
-
     const fromTs = from ? new Date(from).getTime() : -Infinity;
     const toTs = to ? new Date(to).getTime() : Infinity;
 
-    return base.filter((row) => {
-      const rowTs = new Date(row.timestamp).getTime();
-      return (
-        (!deptFilter || row.department?.toLowerCase().includes(deptFilter.toLowerCase())) &&
-        (!scopeFilter || String(row.scope) === String(scopeFilter)) &&
-        rowTs >= fromTs &&
-        rowTs <= toTs
-      );
-    });
+    return recent
+      .filter((r) => {
+        const ts = new Date(r.timestamp).getTime();
+        return (
+          (!deptFilter || r.department?.toLowerCase().includes(deptFilter.toLowerCase())) &&
+          (!scopeFilter || String(r.scope) === String(scopeFilter)) &&
+          ts >= fromTs &&
+          ts <= toTs
+        );
+      })
+      .map((r) => ({
+        department: r.department,
+        scope: r.scope,
+        current: r.current,
+        voltage: r.voltage,
+        power: r.power,
+        energy: r.energy,
+        co2: r.co2_emissions,
+        time: new Date(r.timestamp).toLocaleString(),
+      }));
   }, [recent, deptFilter, scopeFilter, from, to]);
 
   return (
     <Paper sx={{ p: 2 }}>
       <Typography variant="h6" gutterBottom>Recent Department Readings</Typography>
+
+      {/* Filters */}
       <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
         <TextField label="Department" value={deptFilter} onChange={(e) => setDeptFilter(e.target.value)} size="small" />
         <TextField label="Scope" value={scopeFilter} onChange={(e) => setScopeFilter(e.target.value)} size="small" select sx={{ width: 140 }}>
@@ -74,7 +75,7 @@ export default function Departments() {
         <Button variant="outlined" onClick={() => { setDeptFilter(''); setScopeFilter(''); setFrom(''); setTo(''); }}>Clear</Button>
         <Button variant="outlined" onClick={() => {
           const headers = [
-            { key: 'timestamp', label: 'Timestamp' },
+            { key: 'time', label: 'Timestamp' },
             { key: 'department', label: 'Department' },
             { key: 'scope', label: 'Scope' },
             { key: 'current', label: 'Current' },
@@ -88,6 +89,7 @@ export default function Departments() {
         }}>Export CSV</Button>
       </Box>
 
+      {/* Table */}
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -123,12 +125,13 @@ export default function Departments() {
               <TableCell>{row.power}</TableCell>
               <TableCell>{row.energy}</TableCell>
               <TableCell>{row.co2}</TableCell>
-              <TableCell>{new Date(row.timestamp).toLocaleString()}</TableCell>
+              <TableCell>{row.time}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
 
+      {/* Pagination */}
       <TablePagination
         component="div"
         count={rows.length}

@@ -3,7 +3,7 @@ import { Paper, Typography, Button } from '@mui/material';
 
 export default function Reports() {
   const download = () => {
-    const base = process.env.REACT_APP_API_BASE || 'http://localhost:4000/api';
+    const base = process.env.REACT_APP_API_BASE || 'https://sakthi-hackathon-2.onrender.com/api';
     window.open(`${base}/reports/generate`, '_blank');
   };
 

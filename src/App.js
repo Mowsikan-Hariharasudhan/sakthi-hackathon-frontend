@@ -22,9 +22,7 @@ function NavBar({ darkMode, onToggle }) {
         <Button color="inherit" component={Link} to="/departments">Departments</Button>
         <Button color="inherit" component={Link} to="/offsets">Offsets</Button>
         <Button color="inherit" component={Link} to="/reports">Reports</Button>
-        <Box sx={{ ml: 2 }}>
-          <Switch checked={darkMode} onChange={onToggle} />
-        </Box>
+        
       </Toolbar>
     </AppBar>
   );

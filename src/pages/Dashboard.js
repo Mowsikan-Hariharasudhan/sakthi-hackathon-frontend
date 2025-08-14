@@ -297,7 +297,7 @@ export default function Dashboard() {
               variant="outlined" 
               startIcon={<PictureAsPdfIcon />} 
               onClick={() => {
-                const apiBase = process.env.REACT_APP_API_BASE || 'http://localhost:4000/api';
+                const apiBase = process.env.REACT_APP_API_BASE || 'https://sakthi-hackathon-2.onrender.com/api';
                 const params = new URLSearchParams();
                 if (from) params.set('from', from);
                 if (to) params.set('to', to);

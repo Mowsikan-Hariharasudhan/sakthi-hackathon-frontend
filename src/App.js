@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
@@ -24,8 +24,8 @@ import Offsets from './pages/Offsets';
 import Reports from './pages/Reports';
 import Footer from './components/Footer';
 
-function NavBar({ darkMode, onToggle }) {
-  const [mobileOpen, setMobileOpen] = useState(false);
+function NavBar() {
+  const [mobileOpen, setMobileOpen] = React.useState(false);
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ width: 240 }}>
@@ -75,26 +75,13 @@ function NavBar({ darkMode, onToggle }) {
 }
 
 export default function App() {
-  const [darkMode, setDarkMode] = useState(() => {
-    const saved = localStorage.getItem('darkMode');
-    return saved ? JSON.parse(saved) : true;
-  });
-  const theme = useMemo(() => createTheme({ palette: { mode: darkMode ? 'dark' : 'light' } }), [darkMode]);
+  const theme = useMemo(() => createTheme({ palette: { mode: 'light' } }), []);
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <NavBar
-        darkMode={darkMode}
-        onToggle={() => {
-          setDarkMode((d) => {
-            const next = !d;
-            localStorage.setItem('darkMode', JSON.stringify(next));
-            return next;
-          });
-        }}
-      />
-  <Container maxWidth="lg" sx={{ py: 3, px: { xs: 1, sm: 3, md: 4 } }}>
+      <NavBar />
+      <Container maxWidth="lg" sx={{ py: 3, px: { xs: 1, sm: 3, md: 4 } }}>
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/departments" element={<Departments />} />
@@ -102,7 +89,7 @@ export default function App() {
           <Route path="/reports" element={<Reports />} />
         </Routes>
       </Container>
-  <Footer />
+      <Footer />
     </ThemeProvider>
   );
 }

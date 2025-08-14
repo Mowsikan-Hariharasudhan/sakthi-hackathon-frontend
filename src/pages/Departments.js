@@ -58,11 +58,11 @@ export default function Departments() {
   }, [recent, deptFilter, scopeFilter, from, to]);
 
   return (
-    <Paper sx={{ p: 2 }}>
+    <Paper sx={{ p: { xs: 1, sm: 2 } }}>
       <Typography variant="h6" gutterBottom>Recent Department Readings</Typography>
 
-      {/* Filters */}
-      <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
+  {/* Filters */}
+  <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, mb: 2 }}>
         <TextField label="Department" value={deptFilter} onChange={(e) => setDeptFilter(e.target.value)} size="small" />
         <TextField label="Scope" value={scopeFilter} onChange={(e) => setScopeFilter(e.target.value)} size="small" select sx={{ width: 140 }}>
           <MenuItem value="">All</MenuItem>
@@ -90,7 +90,8 @@ export default function Departments() {
       </Box>
 
       {/* Table */}
-      <Table size="small">
+      <Box sx={{ overflowX: 'auto', mb: 2 }}>
+        <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>Department</TableCell>
@@ -129,7 +130,8 @@ export default function Departments() {
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+          </Table>
+        </Box>
 
       {/* Pagination */}
       <TablePagination

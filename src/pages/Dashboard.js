@@ -222,7 +222,7 @@ export default function Dashboard() {
   }, [offsetTotal, totals, summary]);
 
   return (
-    <Box sx={{ p: { xs: 2, md: 3 } }}>
+    <Box sx={{ px: { xs:1, sm:2, md:3 } }}>
       {/* Enhanced Header */}
       <Slide direction="down" in={true} timeout={800}>
         <Stack 
@@ -232,10 +232,10 @@ export default function Dashboard() {
           sx={{ mb: 4, gap: 2 }}
         >
           <Box>
-            <Typography 
-              variant="h4" 
-              sx={{ 
-                fontWeight: 800, 
+            <Typography
+              variant="h4"
+              sx={{
+                fontWeight: 800,
                 background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
@@ -297,7 +297,7 @@ export default function Dashboard() {
               variant="outlined" 
               startIcon={<PictureAsPdfIcon />} 
               onClick={() => {
-                const apiBase = process.env.REACT_APP_API_BASE || 'https://sakthi-hackathon-2.onrender.com/api';
+                const apiBase = process.env.REACT_APP_API_BASE || 'http://localhost:4000/api';
                 const params = new URLSearchParams();
                 if (from) params.set('from', from);
                 if (to) params.set('to', to);
@@ -378,7 +378,7 @@ export default function Dashboard() {
           <Slide direction="up" in={true} timeout={600}>
             <Paper 
               sx={{ 
-                p: 3, 
+                p: { xs:1, sm:2 }, 
                 background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(247, 250, 252, 0.9) 100%)',
                 backdropFilter: 'blur(10px)',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -505,7 +505,7 @@ export default function Dashboard() {
           <Fade in={true} timeout={1200}>
             <Paper 
               sx={{ 
-                p: 3, 
+                p: { xs:1, sm:2 }, 
                 borderRadius: 3,
                 background: 'linear-gradient(135deg, #fff 0%, #f8fafc 100%)',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -564,7 +564,7 @@ export default function Dashboard() {
             <Fade in={true} timeout={1600}>
               <Paper 
                 sx={{ 
-                  p: 3, 
+                  p: { xs:1, sm:2 }, 
                   borderRadius: 3,
                   background: 'linear-gradient(135deg, #fff 0%, #f0f9ff 100%)',
                   border: '1px solid rgba(59, 130, 246, 0.2)',
@@ -624,7 +624,7 @@ export default function Dashboard() {
           <Fade in={true} timeout={1800}>
             <Paper 
               sx={{ 
-                p: 4, 
+                p: { xs: 2, sm: 3, md: 4 }, 
                 background: 'linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #2d3561 100%)',
                 borderRadius: 4,
                 border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -643,7 +643,16 @@ export default function Dashboard() {
               }}
             >
               {/* Enhanced Header Section */}
-              <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: { xs: 'column', md: 'row' },
+                  justifyContent: 'space-between',
+                  alignItems: { xs: 'flex-start', md: 'center' },
+                  gap: { xs: 2, md: 3 },
+                  mb: 4
+                }}
+              >
                 <Box display="flex" alignItems="center" gap={3}>
                   <Box 
                     sx={{ 
@@ -874,8 +883,7 @@ export default function Dashboard() {
                           }}
                         />
                       </Box>
-                      
-                      <Grid container spacing={3}>
+                      <Grid container spacing={{ xs: 2, md: 3 }}>
                         {aiStrategies.global_recommendations.map((g, i) => (
                           <Grid item xs={12} lg={6} key={i}>
                             <Card 
@@ -1036,7 +1044,7 @@ export default function Dashboard() {
                         />
                       </Box>
                       
-                      <Grid container spacing={3}>
+                      <Grid container spacing={{ xs: 2, md: 3 }}>
                         {aiStrategies.strategies_by_department.map((d, i) => (
                           <Grid item xs={12} xl={6} key={i}>
                             <Card 
